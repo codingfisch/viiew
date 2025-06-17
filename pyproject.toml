@@ -1,0 +1,15 @@
+[tool.poetry]
+name = 'viiew'
+version = '0.0.1'
+description = 'View(your_data) 🧐 Supports numpy, pandas, torch, jax, tinygrad...'
+authors = ['codingfisch <l_fisc17@wwu.de>']
+license = 'MIT'
+readme = 'README.md'
+repository = 'https://github.com/codingfisch/viiew'
+
+[tool.poetry.dependencies]
+python = '^3.9'
+
+[build-system]
+requires = ['poetry-core']
+build-backend = 'poetry.core.masonry.api'
