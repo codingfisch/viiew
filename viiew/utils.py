@@ -1,4 +1,4 @@
-import sys, tty, math, base64, termios, platform
+import sys, tty, math, base64, termios
 
 
 def get_pressed_key():
@@ -36,7 +36,7 @@ def int_string(v, chars):
         return f'{v:{chars}d}'
     else:
         n = 5 + (v < 0)
-        assert chars >= n, f'This int needs at least {n} digits. Set chars to at least {n}!'
+        assert chars >= n, f'This int needs at least {n} digits. Set chars to at least {n}!'  # todo: This sometimes (e.g. uint8) too much
         log_v = int(math.log10(abs(v)))
         sign = '+' if v >= 1 else '-'
         string = f'{v / 10 ** log_v:.{chars - (6 + (v < 0))}f}e{sign}{log_v:02d}'
@@ -64,7 +64,7 @@ def get_vrange(arr, rows, colwise=0):
 
 
 def get_rgb(v, vmin, vmax):
-    n = (v - vmin) / vmax
+    n = (v - vmin) / vmax if vmax != 0 else 0
     r, g, b = (0, 0, int(255 * (1 - 2 * n))) if n <= .5 else (int(255 * (2 * (n - 0.5))), 0, 0)
     return f'{r};{g};{b}'
 
