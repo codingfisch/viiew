@@ -1,0 +1,58 @@
+# viiew 🧐
+`pip install viiew` to quickly `view(your_data)` in the terminal!
+
+`your_data` can be a
+
+- 2D [NumPy](https://github.com/numpy/numpy) array
+- [pandas](https://github.com/pandas-dev/pandas) DataFrame
+- 2D [PyTorch](https://github.com/pytorch/pytorch) tensor
+- 2D [jax](https://github.com/jax-ml/jax) array
+- list of lists
+
+As shown in the GIF, just call the `view`-function...
+```python
+import numpy as np
+from viiew import view
+
+your_data = np.arange(1024).reshape(32, 32)
+view(your_data)
+```
+...and e.g. press `d` to scroll through `your_data` (see [all keybindings](https://github.com/codingfisch/viiew?tab=readme-ov-file#keybindings))!
+
+`view` calls `view_array` and pressing `d` adds 1 to the `row0` argument.
+
+<details>
+  <summary><b>Click here</b>, to read about all function arguments of `view` and `view_array` 📑</summary>
+
+`view` and `view_array` take the arguments
+- `data`: The data object to view (e.g., numpy array, pandas DataFrame, etc.)  
+- `row0`: Starting row index (default: 0)  
+- `col0`: Starting column index (default: 0)  
+- `nrows`: Number of rows to display (default: 50)  
+- `ncols`: Number of columns to display (default: 10)  
+- `cidx`: Current column index for sorting (default: None)  
+- `order`: Sorting order (0: none, 1: ascending, -1: descending) (default: 0)  
+- `color`: Whether to use color coding for values (default: True)  
+- `is_table`: Whether to treat the data as a table (auto-detected for pandas DataFrames) (default: None)  
+- `expand`: Expansion level for columns (default: 0)  
+- `nchars`: Number of characters per cell (default: 7)  
+- `end`: String to append after each cell (default: ' ')  
+</details>
+
+## Keybindings
+- **`w`**: Move up one row  
+- **`s`**: Move down one row  
+- **`a`**: Move left one column  
+- **`d`**: Move right one column  
+- **`W`**: Move up 10 rows  
+- **`S`**: Move down 10 rows  
+- **`A`**: Move left 10 columns  
+- **`D`**: Move right 10 columns  
+- **`o`**: Cycle through sorting orders (ascending, descending, none)  
+- **`c`**: Toggle color display  
+- **`t`**: Toggle table mode  
+- **`e`**: Decrease column expansion  
+- **`E`**: Increase column expansion
+- **`n`**: Decrease number of characters per cell  
+- **`N`**: Increase number of characters per cell
+- **`q`**: Quit the viewer
