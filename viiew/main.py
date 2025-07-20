@@ -1,11 +1,11 @@
 import shutil
 
-from .utils import get_rgb, get_vrange, is_number, int_string, float_string, short_string, kitty_encode, get_pressed_key
+from .utils import get_rgb, get_vrange, is_number, short_string, number_string, kitty_encode, get_pressed_key
 FONTSIZE = 16
 
 
-def view(data, row0=0, col0=0, nrows=50, ncols=10, cidx=None, order=0, color=True, is_table=None,
-         expand=0, nchars=7, end=' '):
+def view(data, row0=0, col0=0, nrows=20, ncols=10, cidx=None, order=0, color=True, is_table=None,
+         expand=0, nchars=8, end=' '):
     if hasattr(data, 'shape'):
         n_rows, n_cols = data.shape[:2]
     else:
@@ -13,8 +13,10 @@ def view(data, row0=0, col0=0, nrows=50, ncols=10, cidx=None, order=0, color=Tru
     cidx = col0 if cidx is None else max(0, min(cidx, n_cols - ncols - 1))
     rows = None
     while True:
-        print('Use WASD to navigate and Q to quit. Full list of keybindings: https://github.com/codingfisch/viiew')
-        rows = view_array(data, row0, col0, nrows, ncols, cidx, order, color, is_table, nchars, expand, end, rows)
+        print('Use wasd to navigate and q to quit (see https://github.com/codingfisch/viiew)')
+        rows = view_array(data, row0=row0, col0=col0, nrows=nrows, ncols=ncols, cidx=cidx, order=order, color=color,
+                          is_table=is_table, nchars=nchars, expand=expand, end=end, rows=rows)
+        lines = min(nrows, n_rows) + 2 + hasattr(data, 'columns')
         key = get_pressed_key()
         if key.lower() == 'q': break
         elif key.lower() == 'w': row0 = max(0, row0 - (1 + 9 * (key == 'W')))
@@ -28,21 +30,24 @@ def view(data, row0=0, col0=0, nrows=50, ncols=10, cidx=None, order=0, color=Tru
             cidx = min(n_cols - 1, cidx + step)
             if cidx >= col0 + ncols: col0 = min(max(0, n_cols - ncols), col0 + step)
         elif key == 'o': order = -1 if order > 0 else order + 1
-        elif key == 'c': color = not color
+        elif key == ' ': color = not color
         elif key == 't': is_table = not is_table
         elif key == 'E': expand += 1
         elif key == 'e': expand = max(0, expand - 1)
         elif key == 'N': nchars += 1
         elif key == 'n': nchars = max(0, nchars - 1)
-        lines = min(nrows, n_rows) + 2 + hasattr(data, 'columns')
+        elif key == 'C': ncols += 1
+        elif key == 'c': ncols = max(0, ncols - 1)
+        elif key == 'R': nrows += 1
+        elif key == 'r': nrows = max(0, nrows - 1)
         print(f'\033[A\033[{lines}A')
-        if key in 'nf':
+        if key in 'fnrc':
             print(lines * (shutil.get_terminal_size()[0] * ' ' + '\n'), end='')
             print(f'\033[A\033[{lines}A')
 
 
 def view_array(data, row0=0, col0=0, nrows=50, ncols=10, cidx=None, order=0, color=True, is_table=None,
-               nchars=7, expand=0, end=' ', rows=None):
+               nchars=8, expand=0, end=' ', rows=None):
     is_table = hasattr(data, 'columns') if is_table is None else is_table
     arr = data.values if hasattr(data, 'columns') else data if hasattr(data, 'min') else None
     if rows is None:
@@ -61,9 +66,12 @@ def view_array(data, row0=0, col0=0, nrows=50, ncols=10, cidx=None, order=0, col
     print(idx_chars * ' ', end=end)
     if hasattr(data, 'columns'): print(nchars * ' ', end=end)
     for j in col_idx:
-        print(f'\033[{7 * (j == cidx)}m{j:{nchars + expand * (j == cidx)}d}\033[0m', end=end)
+        if color:
+            print(f'\033[{7 * (j == cidx)}m{j:{nchars + expand * (j == cidx)}d}\033[0m', end=end)
+        else:
+            print(f'{j:{nchars + expand * (j == cidx)}d}', end=end)
     if hasattr(data, 'columns'):
-        print('\n' + (idx_chars + nchars) * ' ', end=end)
+        print('\n' + (idx_chars + nchars + len(end)) * ' ', end=end)
         for c in data.columns[col_idx]:
             print(short_string(c, nchars + expand * (c == cidx)), end=end)
     print()
@@ -72,15 +80,13 @@ def view_array(data, row0=0, col0=0, nrows=50, ncols=10, cidx=None, order=0, col
         if hasattr(data, 'columns'):
             print(short_string(str(data.index[i]), nchars), end=end)
         for j in col_idx:
-            jchars = nchars + expand * (j == cidx)
-            vrange = (vmin[j if is_table else 0], vmax[j if is_table else 0]) if color else None
+            n = nchars + expand * (j == cidx)
             v = rows[i][j]
-            s = (float_string(v, jchars) if isinstance(v, float) else
-                 int_string(v, jchars) if isinstance(v, int) else
-                 short_string(v, jchars))
+            s = number_string(v, n) if isinstance(v, (int, float)) else short_string(v, n)
+            vrange = (vmin[j if is_table else 0], vmax[j if is_table else 0]) if color else None
             if color and all(is_number(x) for x in [v, *vrange]):
-                rgb = get_rgb(v, vmin=vrange[0], vmax=vrange[1])
-                print(f'\033[48;2;{rgb}m{s}\033[0m', end=end)
+                r, g, b = get_rgb(v, vmin=vrange[0], vmax=vrange[1])
+                print(f'\033[48;2;{r};{g};{b}m{s}\033[0m', end=end)
             else:
                 print(s, end=end)
         print()

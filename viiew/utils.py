@@ -1,4 +1,4 @@
-import sys, tty, math, base64, termios
+import sys, tty, base64, termios
 
 
 def get_pressed_key():
@@ -14,40 +14,34 @@ def get_pressed_key():
 
 def kitty_encode(data, vmin, vmax, width, height):
     data = b''.join([3 * int(255 * (float(i) - vmin)/(vmax - vmin)).to_bytes() for i in data])  # data.flatten()
-    return f'\033_Ga=T,f=24,s={width},v={height};{base64.b64encode(data).decode("ascii")}\033\\'
+    return f'\033_Ga=T,f=24,s={width},v={height};{base64.b64encode(data).decode('ascii')}\033\\'
 
 
-def float_string(v, chars):
+def number_string(v, nchars):
     if not is_number(v):
-        return short_string(str(v), chars)
-    elif v > 10 ** chars:
-        log_v = int(math.log10(v))
-        return f'{v / 10 ** log_v:.{chars - 6}f}e+{int(math.log10(v)):02d}'
-    elif v > 10 ** (chars - 2):
-        return f'{int(v):{chars}d}'
-    elif v > 10 ** -(chars - 2):
-        return f'{v:{chars}.{chars - len(str(int(v))) - 1}f}'
+        return short_string(str(v), nchars)
     else:
-        return f'{v:{chars}.{chars - 5}g}'
+        if isinstance(v, int):
+            f_str = f'{v:{nchars}d}'
+            return f_str if len(f_str) == nchars else exp_string(v, nchars)
+        else:
+            f_str = f'{v:1.{nchars - 2 - (v < 0)}f}'[:nchars]
+            if f_str == '0.' + (nchars - 2) * '0' or f_str == '-0.' + (nchars - 3) * '0' or '.' not in f_str:
+                return exp_string(v, nchars)
+            else:
+                return f_str
 
 
-def int_string(v, chars):
-    if -10 ** (chars - 1) < v < 10 ** chars:
-        return f'{v:{chars}d}'
-    else:
-        n = 5 + (v < 0)
-        assert chars >= n, f'This int needs at least {n} digits. Set chars to at least {n}!'  # todo: This sometimes (e.g. uint8) too much
-        log_v = int(math.log10(abs(v)))
-        sign = '+' if v >= 1 else '-'
-        string = f'{v / 10 ** log_v:.{chars - (6 + (v < 0))}f}e{sign}{log_v:02d}'
-        return (chars * ' ' + string)[-chars:]
+def exp_string(v, nchars):
+    space = ' ' if (v > 0 and nchars == 6) or (v < 0 and nchars == 7) else ''
+    return space + f'{v:.{max(0, nchars - 6 - (v < 0))}e}'
 
 
-def short_string(v, chars):
-    return v[:chars - 2] + '..' if len(v) > chars else (v + ' ' * chars)[:chars]
+def short_string(v, nchars):
+    return v[:nchars - 2] + '..' if len(v) > nchars else (v + ' ' * nchars)[:nchars]
 
 
-def get_vrange(arr, rows, colwise=0):
+def get_vrange(arr, rows, colwise=False):
     if arr is None:
         vmin, vmax = [], []
         nrows, ncols = len(rows), len(rows[0])
@@ -64,9 +58,8 @@ def get_vrange(arr, rows, colwise=0):
 
 
 def get_rgb(v, vmin, vmax):
-    n = (v - vmin) / vmax if vmax != 0 else 0
-    r, g, b = (0, 0, int(255 * (1 - 2 * n))) if n <= .5 else (int(255 * (2 * (n - 0.5))), 0, 0)
-    return f'{r};{g};{b}'
+    n = max(0, min(v - vmin / vmax , 1)) if vmax != 0 else 0
+    return (0, 0, int(255 * (1 - 2 * n))) if n <= .5 else (int(255 * (2 * (n - 0.5))), 0, 0)
 
 
 def is_number(v):
