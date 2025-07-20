@@ -46,7 +46,7 @@ def view(data, row0=0, col0=0, nrows=20, ncols=10, cidx=None, order=0, color=Tru
             print(f'\033[A\033[{lines}A')
 
 
-def view_array(data, row0=0, col0=0, nrows=50, ncols=10, cidx=None, order=0, color=True, is_table=None,
+def view_array(data, row0=0, col0=0, nrows=20, ncols=10, cidx=None, order=0, color=True, is_table=None,
                nchars=8, expand=0, end=' ', rows=None):
     is_table = hasattr(data, 'columns') if is_table is None else is_table
     arr = data.values if hasattr(data, 'columns') else data if hasattr(data, 'min') else None
