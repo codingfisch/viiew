@@ -17,9 +17,9 @@ from viiew import view
 your_data = np.arange(1024).reshape(32, 32)
 view(your_data)
 ```
-...and e.g. press `d` to scroll through `your_data` (see [all keybindings](https://github.com/codingfisch/viiew?tab=readme-ov-file#keybindings))!
+...and e.g. press `s` to scroll through `your_data` (see [all keybindings](https://github.com/codingfisch/viiew?tab=readme-ov-file#keybindings))!
 
-`view` calls `view_array` and pressing `d` adds 1 to the `row0` argument.
+`view` calls `view_array` and pressing `s` adds 1 to the `row0` argument.
 
 <details>
   <summary><b>Click here</b>, to read about all function arguments of `view` and `view_array` 📑</summary>
@@ -40,19 +40,23 @@ view(your_data)
 </details>
 
 ## Keybindings
-- **`w`**: Move up one row  
-- **`s`**: Move down one row  
-- **`a`**: Move left one column  
-- **`d`**: Move right one column  
-- **`W`**: Move up 10 rows  
-- **`S`**: Move down 10 rows  
-- **`A`**: Move left 10 columns  
-- **`D`**: Move right 10 columns  
-- **`o`**: Cycle through sorting orders (ascending, descending, none)  
-- **`c`**: Toggle color display  
-- **`t`**: Toggle table mode  
-- **`e`**: Decrease column expansion  
+- **`w`**: Move up one row
+- **`s`**: Move down one row
+- **`a`**: Move left one column
+- **`d`**: Move right one column
+- **`o`**: Cycle through sorting orders (ascending, descending, none)
+- **`t`**: Toggle table mode (column-wise colormap)
+- **`c`**: Toggle color display
+- **`r`**: Decrease number of rows
+- **`R`**: Increase number of rows
+- **`c`**: Decrease number of columns
+- **`C`**: Increase number of columns
+- **`e`**: Decrease column expansion
 - **`E`**: Increase column expansion
-- **`n`**: Decrease number of characters per cell  
+- **`n`**: Decrease number of characters per cell
 - **`N`**: Increase number of characters per cell
+- **`W`**: Move up 10 rows
+- **`S`**: Move down 10 rows
+- **`A`**: Move left 10 columns
+- **`D`**: Move right 10 columns
 - **`q`**: Quit the viewer
