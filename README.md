@@ -19,8 +19,8 @@ As shown in the GIF, just call `view`...
 import numpy as np
 from viiew import view
 
-your_data = np.arange(1024).reshape(32, 32)
-view(your_data)
+x = np.arange(256).reshape(16, 16)
+view(x)
 ```
 ...and e.g. press `s` to scroll through `your_data` (see [**all keybindings**](https://github.com/codingfisch/viiew?tab=readme-ov-file#keybindings))!
 
