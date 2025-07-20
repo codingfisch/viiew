@@ -58,7 +58,7 @@ def get_vrange(arr, rows, colwise=False):
 
 
 def get_rgb(v, vmin, vmax):
-    n = max(0, min(v - vmin / vmax , 1)) if vmax != 0 else 0
+    n = max(0, min((v - vmin) / (vmax - vmin) , 1)) if (vmax - vmin) != 0 else 0
     return (0, 0, int(255 * (1 - 2 * n))) if n <= .5 else (int(255 * (2 * (n - 0.5))), 0, 0)
 
 
