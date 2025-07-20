@@ -1,6 +1,6 @@
 [tool.poetry]
 name = 'viiew'
-version = '0.0.1'
+version = '0.1.0'
 description = 'View(your_data) 🧐 Supports numpy, pandas, torch, jax, tinygrad...'
 authors = ['codingfisch <l_fisc17@wwu.de>']
 license = 'MIT'
@@ -9,6 +9,12 @@ repository = 'https://github.com/codingfisch/viiew'
 
 [tool.poetry.dependencies]
 python = '^3.9'
+
+[tool.poetry.group.test.dependencies]
+pandas = '*'
+torch= '*'
+jax = '*'
+tinygrad = '*'
 
 [build-system]
 requires = ['poetry-core']
