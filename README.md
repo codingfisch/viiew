@@ -1,15 +1,20 @@
 # viiew 🧐
 `pip install viiew` to quickly `view(your_data)` in the terminal!
 
+<p align="center">
+  <img src="https://github.com/codingfisch/viiew/blob/main/demo.svg">
+</p>
+
 `your_data` can be a
 
 - 2D [NumPy](https://github.com/numpy/numpy) array
 - [pandas](https://github.com/pandas-dev/pandas) DataFrame
-- 2D [PyTorch](https://github.com/pytorch/pytorch) tensor
+- 2D [PyTorch](https://github.com/pytorch/pytorch) Tensor
 - 2D [jax](https://github.com/jax-ml/jax) array
+- 2D [tinygrad](https://github.com/tinygrad/tinygrad) Tensor
 - list of lists
 
-As shown in the GIF, just call the `view`-function...
+As shown in the GIF, just call `view`...
 ```python
 import numpy as np
 from viiew import view
@@ -17,12 +22,12 @@ from viiew import view
 your_data = np.arange(1024).reshape(32, 32)
 view(your_data)
 ```
-...and e.g. press `s` to scroll through `your_data` (see [all keybindings](https://github.com/codingfisch/viiew?tab=readme-ov-file#keybindings))!
+...and e.g. press `s` to scroll through `your_data` (see [**all keybindings**](https://github.com/codingfisch/viiew?tab=readme-ov-file#keybindings))!
 
-`view` calls `view_array` and pressing `s` adds 1 to the `row0` argument.
+`view` calls `view_array` and pressing `s` adds 1 to its `row0` argument.
 
 <details>
-  <summary><b>Click here</b>, to read about all function arguments of `view` and `view_array` 📑</summary>
+  <summary><b>Click here</b>, to read about all arguments of `view` and `view_array` 📑</summary>
 
 `view` and `view_array` take the arguments
 - `data`: The data object to view (e.g., numpy array, pandas DataFrame, etc.)  
