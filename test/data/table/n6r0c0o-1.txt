@@ -1,0 +1,4 @@
+              0      1      2 
+         legs   weight desc   
+1 bee         6 0.0050 anno.. 
+0 dog         4     50 beau.. 

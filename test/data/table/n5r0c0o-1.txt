@@ -1,0 +1,4 @@
+            0     1     2 
+        legs  wei.. desc  
+1 bee       6 0.005 ann.. 
+0 dog       4    50 bea.. 
