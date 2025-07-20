@@ -27,7 +27,7 @@ view(x)
 `view` calls `view_array` and pressing `s` adds 1 to its `row0` argument.
 
 <details>
-  <summary><b>Click here</b>, to read about all arguments of `view` and `view_array` 📑</summary>
+  <summary><b>Click here</b>, to read about all arguments 📑</summary>
 
 `view` and `view_array` take the arguments
 - `data`: The data object to view (e.g., numpy array, pandas DataFrame, etc.)  
