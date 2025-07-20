@@ -22,7 +22,7 @@ from viiew import view
 x = np.arange(256).reshape(16, 16)
 view(x)
 ```
-...and e.g. press `s` to scroll through `your_data` (see [**all keybindings**](https://github.com/codingfisch/viiew?tab=readme-ov-file#keybindings))!
+...and e.g. press `s` to scroll through `x` (see [**all keybindings**](https://github.com/codingfisch/viiew?tab=readme-ov-file#keybindings))!
 
 `view` calls `view_array` and pressing `s` adds 1 to its `row0` argument.
 
